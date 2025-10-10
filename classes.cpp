@@ -37,3 +37,11 @@ int Character::basicAttack() {
 void Character::seed() {
     srand(time(0));
 }
+
+int Knight::idCount = 1;
+
+// Knight
+Knight::Knight() : Character(CharacterStats{50, 15, 8, 0, "physical", "hits with his sword"}, "Knight") {
+    id = idCount++;
+    cout << "Knight " << id << " has been recruited!" << endl;
+}

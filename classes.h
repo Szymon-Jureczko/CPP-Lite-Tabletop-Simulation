@@ -45,4 +45,12 @@ public:
     void getInfo();
 };
 
+
+class Knight : public Character {
+private:
+    static int idCount;
+public:
+    Knight();
+};
+
 #endif // CLASSES_H_INCLUDED
