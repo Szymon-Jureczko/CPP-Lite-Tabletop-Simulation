@@ -45,3 +45,25 @@ Knight::Knight() : Character(CharacterStats{50, 15, 8, 0, "physical", "hits with
     id = idCount++;
     cout << "Knight " << id << " has been recruited!" << endl;
 }
+
+int Wizard::idCount = 1;
+int Samurai::idCount = 1;
+int Cleric::idCount = 1;
+
+// Wizard
+Wizard::Wizard() : Character(CharacterStats{30, 30, 0, 3, "magical", "casts lightning"}, "Wizard") {
+    id = idCount++;
+    cout << "Wizard " << id << " has been recruited!" << endl;
+}
+
+// Samurai
+Samurai::Samurai() : Character(CharacterStats{30, 30, 3, 0, "physical", "slashes with katana"}, "Samurai") {
+    id = idCount++;
+    cout << "Samurai " << id << " has been recruited!" << endl;
+}
+
+// Cleric
+Cleric::Cleric() : Character(CharacterStats{50, 15, 0, 8, "magical", "casts holy ray"}, "Cleric") {
+    id = idCount++;
+    cout << "Cleric " << id << " has been recruited!" << endl;
+}

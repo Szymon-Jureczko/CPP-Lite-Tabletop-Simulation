@@ -53,4 +53,26 @@ public:
     Knight();
 };
 
+
+class Wizard : public Character {
+private:
+    static int idCount;
+public:
+    Wizard();
+};
+
+class Samurai : public Character {
+private:
+    static int idCount;
+public:
+    Samurai();
+};
+
+class Cleric : public Character {
+private:
+    static int idCount;
+public:
+    Cleric();
+};
+
 #endif // CLASSES_H_INCLUDED
