@@ -31,7 +31,10 @@ void Character::getInfo() {
 }
 
 int Character::basicAttack() {
-    return rand() % attackPower + 1;
+    int damage = rand() % attackPower + 1;
+    cout << "[ " << name << " " << id << " " << attackMessage
+         << " for " << damage << " damage ]" << endl;
+    return damage;
 }
 
 void Character::seed() {
