@@ -70,3 +70,25 @@ Cleric::Cleric() : Character(CharacterStats{50, 15, 0, 8, "magical", "casts holy
     id = idCount++;
     cout << "Cleric " << id << " has been recruited!" << endl;
 }
+
+Character* Character::operator-(Character* other) {
+    if (health > 0 && other->health > 0) {
+        int defense = (dmgType == "physical") ? other->armorClass : other->magicResistance;
+
+        cout << ":::::: " << name << " " << id << " Attacks "
+             << other->name << " " << other->id << " ::::::" << endl;
+
+        int dmg = basicAttack();
+        dmg = (dmg > defense) ? dmg - defense : 0;
+
+        cout << " [ " << other->name << " " << other->id
+             << " is dealt " << dmg << " damage ]" << endl;
+        other->health -= dmg;
+    }
+
+    if (other->health <= 0) {
+        other->health = 0;
+    }
+
+    return other;
+}

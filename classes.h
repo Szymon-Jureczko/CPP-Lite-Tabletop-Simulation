@@ -43,6 +43,7 @@ public:
     static void seed();
     virtual int basicAttack();
     void getInfo();
+    Character* operator-(Character* other);
 };
 
 
