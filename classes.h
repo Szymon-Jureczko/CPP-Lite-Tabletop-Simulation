@@ -76,4 +76,19 @@ public:
     Cleric();
 };
 
+
+class Goblin : public Character {
+private:
+    static int idCount;
+public:
+    Goblin();
+};
+
+class Skeleton : public Character {
+private:
+    static int idCount;
+public:
+    Skeleton();
+};
+
 #endif // CLASSES_H_INCLUDED

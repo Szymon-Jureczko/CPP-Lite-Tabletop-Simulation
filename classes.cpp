@@ -92,3 +92,18 @@ Character* Character::operator-(Character* other) {
 
     return other;
 }
+
+int Goblin::idCount = 1;
+int Skeleton::idCount = 1;
+
+// Goblin
+Goblin::Goblin() : Character(CharacterStats{25, 15, 3, 0, "physical", "stabs with dagger"}, "Goblin") {
+    id = idCount++;
+    cout << "Goblin " << id << " has appeared!" << endl;
+}
+
+// Skeleton
+Skeleton::Skeleton() : Character(CharacterStats{50, 15, 8, 0, "physical", "hits with sword"}, "Skeleton") {
+    id = idCount++;
+    cout << "Skeleton " << id << " has appeared!" << endl;
+}
