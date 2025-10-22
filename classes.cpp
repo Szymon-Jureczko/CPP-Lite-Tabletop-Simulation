@@ -107,3 +107,18 @@ Skeleton::Skeleton() : Character(CharacterStats{50, 15, 8, 0, "physical", "hits 
     id = idCount++;
     cout << "Skeleton " << id << " has appeared!" << endl;
 }
+
+int Wraith::idCount = 1;
+int Dragon::idCount = 1;
+
+// Wraith
+Wraith::Wraith() : Character(CharacterStats{50, 25, 0, 3, "magical", "haunts"}, "Wraith") {
+    id = idCount++;
+    cout << "Wraith " << id << " has appeared!" << endl;
+}
+
+// Dragon
+Dragon::Dragon() : Character(CharacterStats{60, 30, 9, 9, "magical", "breathes fire"}, "Dragon") {
+    id = idCount++;
+    cout << "Dragon " << id << " has appeared!" << endl;
+}

@@ -91,4 +91,19 @@ public:
     Skeleton();
 };
 
+
+class Wraith : public Character {
+private:
+    static int idCount;
+public:
+    Wraith();
+};
+
+class Dragon : public Character {
+private:
+    static int idCount;
+public:
+    Dragon();
+};
+
 #endif // CLASSES_H_INCLUDED
