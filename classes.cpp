@@ -122,3 +122,21 @@ Dragon::Dragon() : Character(CharacterStats{60, 30, 9, 9, "magical", "breathes f
     id = idCount++;
     cout << "Dragon " << id << " has appeared!" << endl;
 }
+
+Character* Character::partyRecruiter(char choice) {
+    switch (choice) {
+        case '1': return new Knight();
+        case '2': return new Wizard();
+        case '3': return new Samurai();
+        case '4': return new Cleric();
+    }
+    return nullptr;
+}
+
+Character* Character::enemyRecruiter() {
+    int r = rand() % 100;
+    if (r < 30) return new Skeleton();
+    else if (r < 60) return new Wraith();
+    else if (r < 80) return new Dragon();
+    else return new Goblin();
+}

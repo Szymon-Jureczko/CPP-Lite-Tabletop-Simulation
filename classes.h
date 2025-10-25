@@ -41,6 +41,8 @@ public:
     string getDamageType() const;
 
     static void seed();
+    static Character* partyRecruiter(char choice);
+    static Character* enemyRecruiter();
     virtual int basicAttack();
     void getInfo();
     Character* operator-(Character* other);
