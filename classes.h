@@ -45,6 +45,7 @@ public:
     static Character* enemyRecruiter();
     virtual int basicAttack();
     void getInfo();
+    Character* partyTarget(Character** enemyArray, int n);
     Character* operator-(Character* other);
 };
 

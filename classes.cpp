@@ -140,3 +140,17 @@ Character* Character::enemyRecruiter() {
     else if (r < 80) return new Dragon();
     else return new Goblin();
 }
+
+Character* Character::partyTarget(Character** enemyArray, int n) {
+    Character* target = nullptr;
+    for (int i = 0; i < n; i++) {
+        if (enemyArray[i] == nullptr) continue;
+
+        if (target == nullptr ||
+            (dmgType == "physical" && enemyArray[i]->armorClass > target->armorClass) ||
+            (dmgType == "magical" && enemyArray[i]->magicResistance > target->magicResistance)) {
+            target = enemyArray[i];
+        }
+    }
+    return target;
+}
