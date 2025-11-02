@@ -1,3 +1,4 @@
 {
-    "ROS2.distro": "jazzy"
+  "C_Cpp.intelliSenseEngine": "Tag Parser",
+  "C_Cpp.errorSquiggles": "disabled"
 }
