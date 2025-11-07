@@ -47,6 +47,11 @@ int main() {
     textureMap.textures["Wraith"]->loadFromFile("textures/wraith.png");
     textureMap.textures["Dragon"]->loadFromFile("textures/dragon.png");
 
+    sf::Texture bgTexture, graveTexture;
+    bgTexture.loadFromFile("textures/background.png");
+    graveTexture.loadFromFile("textures/grave.png");
+    sf::Sprite bgSprite(bgTexture);
+
     Character::seed();
 
     while (window.isOpen()) {
@@ -55,6 +60,7 @@ int main() {
             if (event.type == sf::Event::Closed) window.close();
         }
         window.clear();
+        window.draw(bgSprite);
         window.display();
     }
 
