@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <map>
 #include "classes.h"
 #include "classes.cpp"
@@ -10,10 +11,15 @@ using std::endl;
 using std::runtime_error;
 using std::map;
 using std::string;
+using std::vector;
 
 struct TextureMap {
     map<string, sf::Texture*> textures;
 };
+
+sf::Texture* getCharacterTexture(Character* character, TextureMap& textureMap) {
+    return textureMap.textures[character->getName()];
+}
 
 int main() {
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Game Window", sf::Style::Fullscreen);
@@ -54,6 +60,39 @@ int main() {
 
     Character::seed();
 
+    // Recruitment Phase
+    vector<sf::Sprite> partySprites(4);
+    vector<Character*> party(4, nullptr);
+    vector<char> classChoices = {'1', '2', '3', '4'};
+
+    for (int i = 0; i < 4; i++) {
+        bool recruited = false;
+        cout << "Recruitment - Press 1=Knight 2=Wizard 3=Samurai 4=Cleric" << endl;
+
+        while (window.isOpen() && !recruited) {
+            sf::Event event;
+            while (window.pollEvent(event)) {
+                if (event.type == sf::Event::Closed) {
+                    window.close();
+                    return 0;
+                }
+                if (event.type == sf::Event::KeyPressed) {
+                    for (char choice : classChoices) {
+                        if (event.key.code == sf::Keyboard::Num1 + (choice - '1')) {
+                            party[i] = Character::partyRecruiter(choice);
+                            partySprites[i].setTexture(*getCharacterTexture(party[i], textureMap));
+                            recruited = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            window.clear();
+            window.draw(bgSprite);
+            window.display();
+        }
+    }
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -64,6 +103,9 @@ int main() {
         window.display();
     }
 
+    for (int i = 0; i < 4; i++) {
+        if (party[i] != nullptr) delete party[i];
+    }
     for (auto& pair : textureMap.textures) {
         delete pair.second;
     }
