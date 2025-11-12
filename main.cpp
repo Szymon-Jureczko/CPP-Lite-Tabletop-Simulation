@@ -93,6 +93,14 @@ int main() {
         }
     }
 
+    // Enemy Initialization
+    vector<sf::Sprite> enemySprites(4);
+    vector<Character*> enemy(4, nullptr);
+    for (int i = 0; i < 4; i++) {
+        enemy[i] = Character::enemyRecruiter();
+        enemySprites[i].setTexture(*getCharacterTexture(enemy[i], textureMap));
+    }
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -105,6 +113,7 @@ int main() {
 
     for (int i = 0; i < 4; i++) {
         if (party[i] != nullptr) delete party[i];
+        if (enemy[i] != nullptr) delete enemy[i];
     }
     for (auto& pair : textureMap.textures) {
         delete pair.second;
