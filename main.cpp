@@ -21,6 +21,16 @@ sf::Texture* getCharacterTexture(Character* character, TextureMap& textureMap) {
     return textureMap.textures[character->getName()];
 }
 
+void assignSpritePosition(vector<sf::Sprite>& sprites, bool isParty) {
+    for (int i = 0; i < 4; i++) {
+        if (isParty) {
+            sprites[i].setPosition(150, 200 + i * 200);
+        } else {
+            sprites[i].setPosition(1500, 250 + i * 200);
+        }
+    }
+}
+
 int main() {
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Game Window", sf::Style::Fullscreen);
     sf::Font font;
@@ -101,6 +111,9 @@ int main() {
         enemySprites[i].setTexture(*getCharacterTexture(enemy[i], textureMap));
     }
 
+    assignSpritePosition(partySprites, true);
+    assignSpritePosition(enemySprites, false);
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -108,6 +121,8 @@ int main() {
         }
         window.clear();
         window.draw(bgSprite);
+        for (auto& sp : partySprites) window.draw(sp);
+        for (auto& sp : enemySprites) window.draw(sp);
         window.display();
     }
 
