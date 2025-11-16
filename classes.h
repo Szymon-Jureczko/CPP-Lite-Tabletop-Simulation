@@ -39,6 +39,7 @@ public:
     int getId() const;
     string getName() const;
     string getDamageType() const;
+    string getStatsString() const;
 
     static void seed();
     static Character* partyRecruiter(char choice);

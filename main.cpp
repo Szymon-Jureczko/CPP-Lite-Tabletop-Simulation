@@ -31,6 +31,32 @@ void assignSpritePosition(vector<sf::Sprite>& sprites, bool isParty) {
     }
 }
 
+void initializeStatsText(vector<sf::Text>& statsTexts, const sf::Font& font) {
+    for (int i = 0; i < 4; i++) {
+        statsTexts[i].setFont(font);
+        statsTexts[i].setCharacterSize(17);
+        statsTexts[i].setFillColor(sf::Color::White);
+    }
+}
+
+void updateCharacterStats(vector<sf::Text>& statsTexts, const vector<Character*>& characters) {
+    for (int i = 0; i < 4; i++) {
+        if (characters[i] != nullptr) {
+            statsTexts[i].setString(characters[i]->getStatsString());
+        }
+    }
+}
+
+void updateStatsPositions(vector<sf::Text>& statsTexts, const vector<sf::Sprite>& sprites, bool isParty) {
+    for (int i = 0; i < 4; i++) {
+        if (isParty) {
+            statsTexts[i].setPosition(sprites[i].getPosition().x - 140, sprites[i].getPosition().y);
+        } else {
+            statsTexts[i].setPosition(sprites[i].getPosition().x - 140, sprites[i].getPosition().y - 20);
+        }
+    }
+}
+
 int main() {
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Game Window", sf::Style::Fullscreen);
     sf::Font font;
@@ -114,6 +140,14 @@ int main() {
     assignSpritePosition(partySprites, true);
     assignSpritePosition(enemySprites, false);
 
+    vector<sf::Text> partyStatsText(4), enemyStatsText(4);
+    initializeStatsText(partyStatsText, font);
+    initializeStatsText(enemyStatsText, font);
+    updateCharacterStats(partyStatsText, party);
+    updateCharacterStats(enemyStatsText, enemy);
+    updateStatsPositions(partyStatsText, partySprites, true);
+    updateStatsPositions(enemyStatsText, enemySprites, false);
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -123,6 +157,8 @@ int main() {
         window.draw(bgSprite);
         for (auto& sp : partySprites) window.draw(sp);
         for (auto& sp : enemySprites) window.draw(sp);
+        for (auto& t : partyStatsText) window.draw(t);
+        for (auto& t : enemyStatsText) window.draw(t);
         window.display();
     }
 

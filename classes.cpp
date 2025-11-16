@@ -23,6 +23,12 @@ string Character::getName() const { return name; }
 string Character::getDamageType() const { return dmgType; }
 int Character::getId() const { return id; }
 
+string Character::getStatsString() const {
+    return name + " " + to_string(id) + "| HP: " + to_string(health) +
+           " AP: " + to_string(attackPower) + " AC: " + to_string(armorClass) +
+           " MR: " + to_string(magicResistance);
+}
+
 void Character::getInfo() {
     cout << "Health: " << health
          << " Armor: " << armorClass
