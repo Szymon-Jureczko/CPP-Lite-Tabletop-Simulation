@@ -110,4 +110,6 @@ public:
     Dragon();
 };
 
+extern vector<string> actionLogHistory;
+void updateActionLog(const string& message);
 #endif // CLASSES_H_INCLUDED

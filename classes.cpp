@@ -6,6 +6,18 @@
 using std::cout;
 using std::endl;
 using std::to_string;
+using std::string;
+using std::vector;
+
+// Global action log
+vector<string> actionLogHistory;
+
+void updateActionLog(const string& message) {
+    actionLogHistory.push_back(message);
+    if (actionLogHistory.size() > 15) {
+        actionLogHistory.erase(actionLogHistory.begin());
+    }
+}
 
 // Character base class implementation
 Character::Character(const CharacterStats& stats, const string& characterName)
