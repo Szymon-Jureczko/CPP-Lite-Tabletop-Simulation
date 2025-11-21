@@ -21,6 +21,16 @@ sf::Texture* getCharacterTexture(Character* character, TextureMap& textureMap) {
     return textureMap.textures[character->getName()];
 }
 
+void renderLog(sf::RenderWindow& window, const sf::Font& font, float yPos = 50.0f) {
+    for (const auto& line : actionLogHistory) {
+        sf::Text logLine(line, font, 22);
+        logLine.setFillColor(sf::Color::White);
+        logLine.setPosition(960.0f - (logLine.getGlobalBounds().width / 2), yPos);
+        window.draw(logLine);
+        yPos += 25.0f;
+    }
+}
+
 void assignSpritePosition(vector<sf::Sprite>& sprites, bool isParty) {
     for (int i = 0; i < 4; i++) {
         if (isParty) {
@@ -103,7 +113,7 @@ int main() {
 
     for (int i = 0; i < 4; i++) {
         bool recruited = false;
-        cout << "Recruitment - Press 1=Knight 2=Wizard 3=Samurai 4=Cleric" << endl;
+        updateActionLog("Recruitment - Press 1 for Knight, 2 for Wizard, 3 for Samurai, 4 for Cleric");
 
         while (window.isOpen() && !recruited) {
             sf::Event event;
@@ -125,8 +135,11 @@ int main() {
             }
             window.clear();
             window.draw(bgSprite);
+            renderLog(window, font);
             window.display();
         }
+
+        partySprites[i].setPosition(150, 200 + i * 200);
     }
 
     // Enemy Initialization
@@ -159,6 +172,7 @@ int main() {
         for (auto& sp : enemySprites) window.draw(sp);
         for (auto& t : partyStatsText) window.draw(t);
         for (auto& t : enemyStatsText) window.draw(t);
+        renderLog(window, font);
         window.display();
     }
 
