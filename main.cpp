@@ -161,11 +161,25 @@ int main() {
     updateStatsPositions(partyStatsText, partySprites, true);
     updateStatsPositions(enemyStatsText, enemySprites, false);
 
+    // Game Loop
+    int turn = 1;
+    bool partyTurn = true;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) window.close();
         }
+
+        if (partyTurn) {
+            updateActionLog("|TURN " + std::to_string(turn) + " - PARTY TURN|");
+        } else {
+            updateActionLog("|TURN " + std::to_string(turn) + " - ENEMY TURN|");
+        }
+
+        updateCharacterStats(partyStatsText, party);
+        updateCharacterStats(enemyStatsText, enemy);
+
         window.clear();
         window.draw(bgSprite);
         for (auto& sp : partySprites) window.draw(sp);
@@ -174,6 +188,9 @@ int main() {
         for (auto& t : enemyStatsText) window.draw(t);
         renderLog(window, font);
         window.display();
+
+        partyTurn = !partyTurn;
+        turn++;
     }
 
     for (int i = 0; i < 4; i++) {
