@@ -21,6 +21,27 @@ sf::Texture* getCharacterTexture(Character* character, TextureMap& textureMap) {
     return textureMap.textures[character->getName()];
 }
 
+void executeAttackRound(vector<Character*>& attackers, vector<Character*>& defenders) {
+    for (int i = 0; i < 4; i++) {
+        if (attackers[i] == nullptr) continue;
+
+        Character* target = attackers[i]->partyTarget(defenders.data(), 4);
+        if (target == nullptr) continue;
+
+        *attackers[i] - target;
+
+        if (target->getHealth() == 0) {
+            for (int j = 0; j < 4; j++) {
+                if (defenders[j] == target) {
+                    delete target;
+                    defenders[j] = nullptr;
+                    break;
+                }
+            }
+        }
+    }
+}
+
 void renderLog(sf::RenderWindow& window, const sf::Font& font, float yPos = 50.0f) {
     for (const auto& line : actionLogHistory) {
         sf::Text logLine(line, font, 22);
@@ -173,8 +194,10 @@ int main() {
 
         if (partyTurn) {
             updateActionLog("|TURN " + std::to_string(turn) + " - PARTY TURN|");
+            executeAttackRound(party, enemy);
         } else {
             updateActionLog("|TURN " + std::to_string(turn) + " - ENEMY TURN|");
+            executeAttackRound(enemy, party);
         }
 
         updateCharacterStats(partyStatsText, party);
