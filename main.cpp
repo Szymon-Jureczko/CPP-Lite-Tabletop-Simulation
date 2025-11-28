@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <map>
 #include "classes.h"
 #include "classes.cpp"
@@ -12,6 +13,8 @@ using std::runtime_error;
 using std::map;
 using std::string;
 using std::vector;
+using std::all_of;
+using std::to_string;
 
 struct TextureMap {
     map<string, sf::Texture*> textures;
@@ -193,11 +196,19 @@ int main() {
         }
 
         if (partyTurn) {
-            updateActionLog("|TURN " + std::to_string(turn) + " - PARTY TURN|");
+            updateActionLog("|TURN " + to_string(turn) + " - PARTY TURN|");
             executeAttackRound(party, enemy);
         } else {
-            updateActionLog("|TURN " + std::to_string(turn) + " - ENEMY TURN|");
+            updateActionLog("|TURN " + to_string(turn) + " - ENEMY TURN|");
             executeAttackRound(enemy, party);
+        }
+
+        if (all_of(enemy.begin(), enemy.end(), [](Character* c) { return c == nullptr; })) {
+            updateActionLog("All enemies have been defeated. You win!");
+            window.close();
+        } else if (all_of(party.begin(), party.end(), [](Character* c) { return c == nullptr; })) {
+            updateActionLog("Your party has been defeated. Game over.");
+            window.close();
         }
 
         updateCharacterStats(partyStatsText, party);
