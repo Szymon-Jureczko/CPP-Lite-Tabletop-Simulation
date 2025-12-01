@@ -24,6 +24,34 @@ sf::Texture* getCharacterTexture(Character* character, TextureMap& textureMap) {
     return textureMap.textures[character->getName()];
 }
 
+void renderCharacters(sf::RenderWindow& window, const vector<Character*>& characters,
+                     const vector<sf::Sprite>& sprites, const vector<sf::Text>& statsTexts,
+                     const sf::Texture& graveTexture, bool isParty) {
+    for (int i = 0; i < 4; i++) {
+        if (characters[i] != nullptr) {
+            window.draw(sprites[i]);
+            window.draw(statsTexts[i]);
+        } else {
+            sf::Sprite grave(graveTexture);
+            grave.setPosition(sprites[i].getPosition());
+            window.draw(grave);
+        }
+    }
+}
+
+void renderGameState(sf::RenderWindow& window, const sf::Sprite& bg,
+                    const vector<Character*>& party, const vector<sf::Sprite>& partySprites,
+                    const vector<sf::Text>& partyStats, const vector<Character*>& enemy,
+                    const vector<sf::Sprite>& enemySprites, const vector<sf::Text>& enemyStats,
+                    const sf::Font& font, const sf::Texture& graveTexture) {
+    window.clear();
+    window.draw(bg);
+    renderCharacters(window, party, partySprites, partyStats, graveTexture, true);
+    renderCharacters(window, enemy, enemySprites, enemyStats, graveTexture, false);
+    renderLog(window, font);
+    window.display();
+}
+
 void executeAttackRound(vector<Character*>& attackers, vector<Character*>& defenders) {
     for (int i = 0; i < 4; i++) {
         if (attackers[i] == nullptr) continue;
@@ -213,15 +241,11 @@ int main() {
 
         updateCharacterStats(partyStatsText, party);
         updateCharacterStats(enemyStatsText, enemy);
+        updateStatsPositions(partyStatsText, partySprites, true);
+        updateStatsPositions(enemyStatsText, enemySprites, false);
 
-        window.clear();
-        window.draw(bgSprite);
-        for (auto& sp : partySprites) window.draw(sp);
-        for (auto& sp : enemySprites) window.draw(sp);
-        for (auto& t : partyStatsText) window.draw(t);
-        for (auto& t : enemyStatsText) window.draw(t);
-        renderLog(window, font);
-        window.display();
+        renderGameState(window, bgSprite, party, partySprites, partyStatsText, enemy,
+                       enemySprites, enemyStatsText, font, graveTexture);
 
         partyTurn = !partyTurn;
         turn++;
