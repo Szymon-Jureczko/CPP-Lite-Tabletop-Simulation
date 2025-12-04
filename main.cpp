@@ -158,6 +158,32 @@ int main() {
 
     Character::seed();
 
+    // Initialize UI
+    vector<sf::Text> partyStatsText_init(4), enemyStatsText_init(4);
+
+    // Start Menu
+    sf::Text playButton("PLAY", font, 50);
+    playButton.setPosition(960.0f - playButton.getGlobalBounds().width / 2, 540.0f);
+
+    bool inStartMenu = true;
+    while (inStartMenu && window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
+            if (event.type == sf::Event::MouseButtonPressed) {
+                if (playButton.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+                    inStartMenu = false;
+                }
+            }
+        }
+        window.clear();
+        window.draw(bgSprite);
+        window.draw(playButton);
+        window.display();
+    }
+
     // Recruitment Phase
     vector<sf::Sprite> partySprites(4);
     vector<Character*> party(4, nullptr);
