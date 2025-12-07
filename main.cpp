@@ -24,6 +24,22 @@ sf::Texture* getCharacterTexture(Character* character, TextureMap& textureMap) {
     return textureMap.textures[character->getName()];
 }
 
+void waitForKeyPress(sf::RenderWindow& window) {
+    bool waiting = true;
+    while (waiting && window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+                waiting = false;
+            }
+            if (event.type == sf::Event::KeyPressed) {
+                waiting = false;
+            }
+        }
+    }
+}
+
 void renderCharacters(sf::RenderWindow& window, const vector<Character*>& characters,
                      const vector<sf::Sprite>& sprites, const vector<sf::Text>& statsTexts,
                      const sf::Texture& graveTexture, bool isParty) {
@@ -239,11 +255,17 @@ int main() {
     updateStatsPositions(partyStatsText, partySprites, true);
     updateStatsPositions(enemyStatsText, enemySprites, false);
 
+    updateActionLog("|GAME START| Press any key to begin...");
+    renderGameState(window, bgSprite, party, partySprites, partyStatsText, enemy,
+                    enemySprites, enemyStatsText, font, graveTexture);
+    waitForKeyPress(window);
+
     // Game Loop
     int turn = 1;
     bool partyTurn = true;
+    bool gameOver = false;
 
-    while (window.isOpen()) {
+    while (window.isOpen() && !gameOver) {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) window.close();
@@ -259,10 +281,10 @@ int main() {
 
         if (all_of(enemy.begin(), enemy.end(), [](Character* c) { return c == nullptr; })) {
             updateActionLog("All enemies have been defeated. You win!");
-            window.close();
+            gameOver = true;
         } else if (all_of(party.begin(), party.end(), [](Character* c) { return c == nullptr; })) {
             updateActionLog("Your party has been defeated. Game over.");
-            window.close();
+            gameOver = true;
         }
 
         updateCharacterStats(partyStatsText, party);
@@ -272,6 +294,13 @@ int main() {
 
         renderGameState(window, bgSprite, party, partySprites, partyStatsText, enemy,
                        enemySprites, enemyStatsText, font, graveTexture);
+
+        if (!gameOver) {
+            updateActionLog("Press any key to continue...");
+            renderGameState(window, bgSprite, party, partySprites, partyStatsText, enemy,
+                           enemySprites, enemyStatsText, font, graveTexture);
+            waitForKeyPress(window);
+        }
 
         partyTurn = !partyTurn;
         turn++;
