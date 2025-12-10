@@ -2,12 +2,27 @@
 #include "classes.h"
 #include <time.h>
 #include <cstdlib>
+#include <vector>
+#include <windows.h>
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
+using std::vector;
+using std::string;
 using std::cout;
 using std::endl;
 using std::to_string;
-using std::string;
-using std::vector;
+using std::map;
+
+// Static ID counters
+int Knight::idCount = 1;
+int Wizard::idCount = 1;
+int Samurai::idCount = 1;
+int Cleric::idCount = 1;
+int Goblin::idCount = 1;
+int Skeleton::idCount = 1;
+int Wraith::idCount = 1;
+int Dragon::idCount = 1;
 
 // Global action log
 vector<string> actionLogHistory;
@@ -21,7 +36,7 @@ void updateActionLog(const string& message) {
 
 // Character base class implementation
 Character::Character(const CharacterStats& stats, const string& characterName)
-    : health(stats.health), attackPower(stats.attackPower),
+    : health(stats.health), attackPower(stats.attackPower), 
       armorClass(stats.armorClass), magicResistance(stats.magicResistance),
       dmgType(stats.damageType), name(characterName), attackMessage(stats.attackMessage) {}
 
@@ -57,50 +72,38 @@ int Character::basicAttack() {
     return damage;
 }
 
+int Character::ability() {
+    return 0;
+}
+
 void Character::seed() {
     srand(time(0));
 }
 
-int Knight::idCount = 1;
-
-// Knight
-Knight::Knight() : Character(CharacterStats{50, 15, 8, 0, "physical", "hits with his sword"}, "Knight") {
-    id = idCount++;
-    updateActionLog("Knight " + to_string(id) + " has been recruited!");
-}
-
-int Wizard::idCount = 1;
-int Samurai::idCount = 1;
-int Cleric::idCount = 1;
-
-// Wizard
-Wizard::Wizard() : Character(CharacterStats{30, 30, 0, 3, "magical", "casts lightning"}, "Wizard") {
-    id = idCount++;
-    updateActionLog("Wizard " + to_string(id) + " has been recruited!");
-}
-
-// Samurai
-Samurai::Samurai() : Character(CharacterStats{30, 30, 3, 0, "physical", "slashes with katana"}, "Samurai") {
-    id = idCount++;
-    updateActionLog("Samurai " + to_string(id) + " has been recruited!");
-}
-
-// Cleric
-Cleric::Cleric() : Character(CharacterStats{50, 15, 0, 8, "magical", "casts holy ray"}, "Cleric") {
-    id = idCount++;
-    updateActionLog("Cleric " + to_string(id) + " has been recruited!");
+Character* Character::partyTarget(Character** enemyArray, int n) {
+    Character* target = nullptr;
+    for (int i = 0; i < n; i++) {
+        if (enemyArray[i] == nullptr) continue;
+        
+        if (target == nullptr || 
+            (dmgType == "physical" && enemyArray[i]->armorClass > target->armorClass) ||
+            (dmgType == "magical" && enemyArray[i]->magicResistance > target->magicResistance)) {
+            target = enemyArray[i];
+        }
+    }
+    return target;
 }
 
 Character* Character::operator-(Character* other) {
     if (health > 0 && other->health > 0) {
         int defense = (dmgType == "physical") ? other->armorClass : other->magicResistance;
-
+        
         updateActionLog(":::::: " + name + " " + to_string(id) + " Attacks " + other->name + 
                        " " + to_string(other->id) + " ::::::");
-
+        
         int dmg = basicAttack();
         dmg = (dmg > defense) ? dmg - defense : 0;
-
+        
         updateActionLog(" [ " + other->name + " " + to_string(other->id) + " is dealt " + 
                        to_string(dmg) + " damage ]");
         other->health -= dmg;
@@ -111,36 +114,6 @@ Character* Character::operator-(Character* other) {
     }
 
     return other;
-}
-
-int Goblin::idCount = 1;
-int Skeleton::idCount = 1;
-
-// Goblin
-Goblin::Goblin() : Character(CharacterStats{25, 15, 3, 0, "physical", "stabs with dagger"}, "Goblin") {
-    id = idCount++;
-    updateActionLog("Goblin " + to_string(id) + " has appeared!");
-}
-
-// Skeleton
-Skeleton::Skeleton() : Character(CharacterStats{50, 15, 8, 0, "physical", "hits with sword"}, "Skeleton") {
-    id = idCount++;
-    updateActionLog("Skeleton " + to_string(id) + " has appeared!");
-}
-
-int Wraith::idCount = 1;
-int Dragon::idCount = 1;
-
-// Wraith
-Wraith::Wraith() : Character(CharacterStats{50, 25, 0, 3, "magical", "haunts"}, "Wraith") {
-    id = idCount++;
-    updateActionLog("Wraith " + to_string(id) + " has appeared!");
-}
-
-// Dragon
-Dragon::Dragon() : Character(CharacterStats{60, 30, 9, 9, "magical", "breathes fire"}, "Dragon") {
-    id = idCount++;
-    updateActionLog("Dragon " + to_string(id) + " has appeared!");
 }
 
 Character* Character::partyRecruiter(char choice) {
@@ -161,16 +134,50 @@ Character* Character::enemyRecruiter() {
     else return new Goblin();
 }
 
-Character* Character::partyTarget(Character** enemyArray, int n) {
-    Character* target = nullptr;
-    for (int i = 0; i < n; i++) {
-        if (enemyArray[i] == nullptr) continue;
+// Knight
+Knight::Knight() : Character(CharacterStats{50, 15, 8, 0, "physical", "hits with his sword"}, "Knight") {
+    id = idCount++;
+    updateActionLog("Knight " + to_string(id) + " has been recruited!");
+}
 
-        if (target == nullptr ||
-            (dmgType == "physical" && enemyArray[i]->armorClass > target->armorClass) ||
-            (dmgType == "magical" && enemyArray[i]->magicResistance > target->magicResistance)) {
-            target = enemyArray[i];
-        }
-    }
-    return target;
+// Wizard
+Wizard::Wizard() : Character(CharacterStats{30, 30, 0, 3, "magical", "casts lightning"}, "Wizard") {
+    id = idCount++;
+    updateActionLog("Wizard " + to_string(id) + " has been recruited!");
+}
+
+// Samurai
+Samurai::Samurai() : Character(CharacterStats{30, 30, 3, 0, "physical", "slashes with katana"}, "Samurai") {
+    id = idCount++;
+    updateActionLog("Samurai " + to_string(id) + " has been recruited!");
+}
+
+// Cleric
+Cleric::Cleric() : Character(CharacterStats{50, 15, 0, 8, "magical", "casts holy ray"}, "Cleric") {
+    id = idCount++;
+    updateActionLog("Cleric " + to_string(id) + " has been recruited!");
+}
+
+// Goblin
+Goblin::Goblin() : Character(CharacterStats{25, 15, 3, 0, "physical", "stabs with dagger"}, "Goblin") {
+    id = idCount++;
+    updateActionLog("Goblin " + to_string(id) + " has appeared!");
+}
+
+// Skeleton
+Skeleton::Skeleton() : Character(CharacterStats{50, 15, 8, 0, "physical", "hits with sword"}, "Skeleton") {
+    id = idCount++;
+    updateActionLog("Skeleton " + to_string(id) + " has appeared!");
+}
+
+// Wraith
+Wraith::Wraith() : Character(CharacterStats{50, 25, 0, 3, "magical", "haunts"}, "Wraith") {
+    id = idCount++;
+    updateActionLog("Wraith " + to_string(id) + " has appeared!");
+}
+
+// Dragon
+Dragon::Dragon() : Character(CharacterStats{60, 30, 9, 9, "magical", "breathes fire"}, "Dragon") {
+    id = idCount++;
+    updateActionLog("Dragon " + to_string(id) + " has appeared!");
 }

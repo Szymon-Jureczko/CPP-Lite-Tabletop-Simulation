@@ -2,9 +2,11 @@
 #define CLASSES_H_INCLUDED
 #include <vector>
 #include <string>
+#include <map>
 
 using std::vector;
 using std::string;
+using std::map;
 
 // Character stats configuration
 struct CharacterStats {
@@ -31,7 +33,8 @@ protected:
 public:
     Character(const CharacterStats& stats, const string& characterName);
     virtual ~Character();
-
+    
+    // Const getters
     int getHealth() const;
     int getArmorClass() const;
     int getMagicRes() const;
@@ -40,24 +43,27 @@ public:
     string getName() const;
     string getDamageType() const;
     string getStatsString() const;
-
+    
+    // Static/utility methods
     static void seed();
     static Character* partyRecruiter(char choice);
     static Character* enemyRecruiter();
+    
+    // Game mechanics
     virtual int basicAttack();
+    virtual int ability();
     void getInfo();
     Character* partyTarget(Character** enemyArray, int n);
     Character* operator-(Character* other);
 };
 
-
+// Derived class types
 class Knight : public Character {
 private:
     static int idCount;
 public:
     Knight();
 };
-
 
 class Wizard : public Character {
 private:
@@ -80,7 +86,6 @@ public:
     Cleric();
 };
 
-
 class Goblin : public Character {
 private:
     static int idCount;
@@ -94,7 +99,6 @@ private:
 public:
     Skeleton();
 };
-
 
 class Wraith : public Character {
 private:
