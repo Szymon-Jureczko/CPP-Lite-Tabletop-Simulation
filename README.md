@@ -1,4 +1,4 @@
-# C--Lite-Tabletop-Simulation
+# C++Lite-Tabletop-Simulation
 A turn-based combat simulator inspired by Dungeons & Dragons mechanics, built in C++ with SFML graphics rendering. Assemble a party of heroes and engage in tactical battles against a randomised set of enemies.
 
 ## Features
