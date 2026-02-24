@@ -1,0 +1,119 @@
+#ifndef CLASSES_H_INCLUDED
+#define CLASSES_H_INCLUDED
+#include <vector>
+#include <string>
+#include <map>
+
+using std::vector;
+using std::string;
+using std::map;
+
+// Character stats configuration
+struct CharacterStats {
+    int health;
+    int attackPower;
+    int armorClass;
+    int magicResistance;
+    string damageType;
+    string attackMessage;
+};
+
+// Base character class
+class Character {
+protected:
+    int health;
+    int attackPower;
+    int armorClass;
+    int magicResistance;
+    string dmgType;
+    string name;
+    int id;
+    string attackMessage;
+
+public:
+    Character(const CharacterStats& stats, const string& characterName);
+    virtual ~Character();
+    
+    // Const getters
+    int getHealth() const;
+    int getArmorClass() const;
+    int getMagicRes() const;
+    int getAttackPower() const;
+    int getId() const;
+    string getName() const;
+    string getDamageType() const;
+    string getStatsString() const;
+    
+    // Static/utility methods
+    static void seed();
+    static Character* partyRecruiter(char choice);
+    static Character* enemyRecruiter();
+    
+    // Game mechanics
+    virtual int basicAttack();
+    virtual int ability();
+    void getInfo();
+    Character* partyTarget(Character** enemyArray, int n);
+    Character* operator-(Character* other);
+};
+
+// Derived class types
+class Knight : public Character {
+private:
+    static int idCount;
+public:
+    Knight();
+};
+
+class Wizard : public Character {
+private:
+    static int idCount;
+public:
+    Wizard();
+};
+
+class Samurai : public Character {
+private:
+    static int idCount;
+public:
+    Samurai();
+};
+
+class Cleric : public Character {
+private:
+    static int idCount;
+public:
+    Cleric();
+};
+
+class Goblin : public Character {
+private:
+    static int idCount;
+public:
+    Goblin();
+};
+
+class Skeleton : public Character {
+private:
+    static int idCount;
+public:
+    Skeleton();
+};
+
+class Wraith : public Character {
+private:
+    static int idCount;
+public:
+    Wraith();
+};
+
+class Dragon : public Character {
+private:
+    static int idCount;
+public:
+    Dragon();
+};
+
+extern vector<string> actionLogHistory;
+void updateActionLog(const string& message);
+#endif // CLASSES_H_INCLUDED
