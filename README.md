@@ -1,4 +1,7 @@
 # C++Lite-Tabletop-Simulation
+
+![C++](https://img.shields.io/badge/C++-11%2B-blue) ![SFML](https://img.shields.io/badge/SFML-2.5.1-green) ![GCC](https://img.shields.io/badge/GCC%2FG++-MinGW-orange) ![Simulation](https://img.shields.io/badge/Type-Simulation-blueviolet) ![License](https://img.shields.io/badge/License-MIT-brightgreen)
+
 A turn-based combat simulator inspired by Dungeons & Dragons mechanics, built in C++ with SFML graphics rendering. Assemble a party of heroes and engage in tactical battles against a randomised set of enemies.
 
 ## Features
@@ -34,7 +37,6 @@ attack roll value.
   - Download from: https://www.sfml-dev.org/download.php
   - Extract to `C:\SFML\SFML-2.5.1\` (Windows)
 - **GCC/G++** (MinGW on Windows or native on Linux/Mac)
-- 
 
 ## Build & Run
 
