@@ -1,6 +1,6 @@
 # C++Lite-Tabletop-Simulation
 
-![C++](https://img.shields.io/badge/C++-11%2B-blue) ![SFML](https://img.shields.io/badge/SFML-2.5.1-green) ![GCC](https://img.shields.io/badge/GCC%2FG++-MinGW-orange) ![Simulation](https://img.shields.io/badge/Type-Simulation-blueviolet) ![License](https://img.shields.io/badge/License-MIT-brightgreen)
+![C++](https://img.shields.io/badge/C++-11%2B-blue) ![SFML](https://img.shields.io/badge/SFML-2.5.1-green) ![GCC](https://img.shields.io/badge/GCC%2FG++-MinGW-orange) ![License](https://img.shields.io/badge/License-MIT-brightgreen)
 
 A turn-based combat simulator inspired by Dungeons & Dragons mechanics, built in C++ with SFML graphics rendering. Assemble a party of heroes and engage in tactical battles against a randomised set of enemies.
 
